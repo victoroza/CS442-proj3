@@ -33,6 +33,7 @@ public class DashBoardSubject implements Subject {
 		for(Map.Entry<Observer, DashboardFilter> entry : observerList.entrySet()){
 			DashboardFilter filterToCheck = entry.getValue();
 			if(filterToCheck.check(notifStr)){
+				System.out.println("HERE");
 				Observer obsToUpdate = entry.getKey();
 				obsToUpdate.update(notifStr);
 			}
