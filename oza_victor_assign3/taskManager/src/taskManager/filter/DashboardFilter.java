@@ -1,5 +1,5 @@
 package taskManager.filter;
 
-public interface Filter {
+public interface DashboardFilter {
     public boolean check(String filter);
 }
