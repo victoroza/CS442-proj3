@@ -5,7 +5,7 @@ import taskManager.filter.DashboardFilter;
 public class PerformanceTabFilterImpl implements DashboardFilter {
     public boolean check(String filter) {
         boolean retVal = false;
-        if(filter == "performance" || filter == "Performance") {
+        if(filter.contains("performance") || filter.contains("Performance")) {
             retVal = true;
         }
         return retVal;

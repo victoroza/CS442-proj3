@@ -13,7 +13,9 @@ public class DashBoardSubject implements Subject {
 	private FileProcessor fp;
 
 	public DashBoardSubject() {
+		fp = new FileProcessor();
 		observerList = new HashMap<Observer, DashboardFilter>();
+		
 
 	}
 
@@ -28,13 +30,23 @@ public class DashBoardSubject implements Subject {
 	}
 
 	public void notifyAllObservers(){
-
+		for(Map.Entry<Observer, DashboardFilter> entry : observerList.entrySet()){
+			DashboardFilter filterToCheck = entry.getValue();
+			if(filterToCheck.check(notifStr)){
+				Observer obsToUpdate = entry.getKey();
+				obsToUpdate.update(notifStr);
+			}
+		}
 	}
 
-	public void readFile(String file) {
+	public void readFile() {
 		do {
-
-		}
+			notifStr = fp.readLine();
+			if(notifStr != null) {
+				notifyAllObservers();
+				System.out.println(notifStr);
+			}
+		} while(notifStr != null);
 	}
 
 }

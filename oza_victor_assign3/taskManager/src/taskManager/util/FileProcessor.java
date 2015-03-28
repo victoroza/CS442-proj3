@@ -3,8 +3,14 @@ package taskManager.util;
 import java.io.*;
 
 public class FileProcessor {
+	private static String file;
 	private BufferedReader reader;
-	public FileProcessor(String file) {
+	
+	public static void setFile(String fileIn) {
+		file = fileIn;
+	}
+	
+	public FileProcessor( ) {
 		try {
 			reader = new BufferedReader(new FileReader(file));
 		} catch (FileNotFoundException e) {
