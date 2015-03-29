@@ -11,8 +11,13 @@ public class Driver {
         Subject sub = new DashBoardSubject();
         Observer perfObs = new PerformanceTab();
         Observer userObs = new UsersTab();
+        Observer proObs = new ProcessesTab();
         DashboardFilter perfFilter = new PerformanceTabFilterImpl();
         DashboardFilter userFilter = new UsersTabFilterImpl();
+        DashboardFilter proFilter = new ProcessesTabFilterImpl();
+        sub.registerObserver(perfObs, perfFilter);
+        sub.registerObserver(userObs, userFilter);
+        sub.registerObserver(proObs, proFilter);
         ((DashBoardSubject)sub).readFile();
         
     }

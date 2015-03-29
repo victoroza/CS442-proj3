@@ -32,10 +32,15 @@ public class DashBoardSubject implements Subject {
 	public void notifyAllObservers(){
 		for(Map.Entry<Observer, DashboardFilter> entry : observerList.entrySet()){
 			DashboardFilter filterToCheck = entry.getValue();
-			if(filterToCheck.check(notifStr)){
-				System.out.println("HERE");
-				Observer obsToUpdate = entry.getKey();
-				obsToUpdate.update(notifStr);
+			System.out.println("checking obs");
+			if(notifStr.contains("*")) {
+				String[] taskSplit = notifStr.split("\\*");
+				for(int i = 0; i < taskSplit.length; i++) {
+					if(filterToCheck.check(taskSplit[i])){
+						Observer obsToUpdate = entry.getKey();
+						obsToUpdate.update(taskSplit[i]);
+					}
+				}
 			}
 		}
 	}
@@ -45,7 +50,6 @@ public class DashBoardSubject implements Subject {
 			notifStr = fp.readLine();
 			if(notifStr != null) {
 				notifyAllObservers();
-				System.out.println(notifStr);
 			}
 		} while(notifStr != null);
 	}
