@@ -2,20 +2,33 @@ package taskManager.observers;
 
 import taskManager.observers.Observer;
 import taskManager.util.FileProcessor;
+import taskManager.display.DisplayFile;
 
-public class PerformanceTab implements Observer {
+import java.util.*;
+
+public class PerformanceTab implements Observer, DisplayFile {
 	private FileProcessor writer;
+	private List<String> toWrite;
 
 	public PerformanceTab(FileProcessor writerIn) {
 		writer = writerIn;
+		toWrite = new ArrayList<String>();
 	}
 
 	public void update(String value) {
-		writer.writeLine("---PERFORMANCE---");
+		toWrite.add("---PERFORMANCE---");
 		value = value.substring(12, value.length());
 		String[] taskSplit = value.split(":");
-		writer.writeLine(String.format("Memory Total: %s  Memory Used: %s  Memory  Free: %s  Memory  Cached: %s", taskSplit[0], taskSplit[1], taskSplit[2], taskSplit[3]));
-		writer.writeLine(String.format("CPU Idle: %s  CPU User Level: %s  CPU System Level: %s", taskSplit[4], taskSplit[5], taskSplit[6]));
-		writer.writeLine("");
+		toWrite.add(String.format("Memory Total: %s  Memory Used: %s  Memory  Free: %s  Memory  Cached: %s", taskSplit[0], taskSplit[1], taskSplit[2], taskSplit[3]));
+		toWrite.add(String.format("CPU Idle: %s  CPU User Level: %s  CPU System Level: %s", taskSplit[4], taskSplit[5], taskSplit[6]));
+		toWrite.add("");
+		writeToFile();
+		toWrite.clear();
+	}
+
+	public void writeToFile() {
+		for(int i = 0; i < toWrite.size(); i++){
+			writer.writeLine(toWrite.get(i));
+		}
 	}
 }

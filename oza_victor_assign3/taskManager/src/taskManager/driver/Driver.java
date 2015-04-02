@@ -18,8 +18,8 @@ public class Driver {
         DashboardFilter userFilter = new UsersTabFilterImpl();
         DashboardFilter proFilter = new ProcessesTabFilterImpl();
         sub.registerObserver(proObs, proFilter);
-        sub.registerObserver(userObs, userFilter);
         sub.registerObserver(perfObs, perfFilter);
+        sub.registerObserver(userObs, userFilter);
         ((DashBoardSubject)sub).readFile();
         reader.closeFiles();
         writer.closeFiles();
