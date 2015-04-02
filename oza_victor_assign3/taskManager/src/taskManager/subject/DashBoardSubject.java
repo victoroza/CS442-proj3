@@ -10,10 +10,12 @@ import taskManager.util.FileProcessor;
 public class DashBoardSubject implements Subject {
 	private String notifStr = null;
 	private Map<Observer, DashboardFilter> observerList;
-	private FileProcessor fp;
+	private FileProcessor reader;
+	private FileProcessor writer;
 
-	public DashBoardSubject() {
-		fp = new FileProcessor();
+	public DashBoardSubject(FileProcessor readerIn, FileProcessor writerIn) {
+		reader = readerIn;
+		writer = writerIn;
 		observerList = new HashMap<Observer, DashboardFilter>();
 		
 
@@ -32,13 +34,14 @@ public class DashBoardSubject implements Subject {
 	public void notifyAllObservers(){
 		for(Map.Entry<Observer, DashboardFilter> entry : observerList.entrySet()){
 			DashboardFilter filterToCheck = entry.getValue();
-			System.out.println("checking obs");
 			if(notifStr.contains("*")) {
 				String[] taskSplit = notifStr.split("\\*");
-				for(int i = 0; i < taskSplit.length; i++) {
-					if(filterToCheck.check(taskSplit[i])){
-						Observer obsToUpdate = entry.getKey();
-						obsToUpdate.update(taskSplit[i]);
+				if(taskSplit.length > 0){
+					for(int i = 0; i < taskSplit.length; i++) {
+						if(filterToCheck.check(taskSplit[i])){
+							Observer obsToUpdate = entry.getKey();
+							obsToUpdate.update(taskSplit[i]);
+						}
 					}
 				}
 			}
@@ -47,11 +50,14 @@ public class DashBoardSubject implements Subject {
 
 	public void readFile() {
 		do {
-			notifStr = fp.readLine();
+			notifStr = reader.readLine();
 			if(notifStr != null) {
+				writer.writeLine("---TAB(s) BEGIN---");
 				notifyAllObservers();
+				writer.writeLine("---TAB(s) END---");
 			}
 		} while(notifStr != null);
+		// writer.writeLine("");
 	}
 
 }

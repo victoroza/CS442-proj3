@@ -7,18 +7,22 @@ import taskManager.filter.*;
 
 public class Driver {
     public static void main(String args[]) {
-        FileProcessor.setFile(args[0]);
-        Subject sub = new DashBoardSubject();
-        Observer perfObs = new PerformanceTab();
-        Observer userObs = new UsersTab();
-        Observer proObs = new ProcessesTab();
+        FileProcessor reader = new FileProcessor(args[0], "READ");
+        FileProcessor writer = new FileProcessor(args[1], "WRITE");
+
+        Subject sub = new DashBoardSubject(reader, writer);
+        Observer perfObs = new PerformanceTab(writer);
+        Observer userObs = new UsersTab(writer);
+        Observer proObs = new ProcessesTab(writer);
         DashboardFilter perfFilter = new PerformanceTabFilterImpl();
         DashboardFilter userFilter = new UsersTabFilterImpl();
         DashboardFilter proFilter = new ProcessesTabFilterImpl();
-        sub.registerObserver(perfObs, perfFilter);
-        sub.registerObserver(userObs, userFilter);
         sub.registerObserver(proObs, proFilter);
+        sub.registerObserver(userObs, userFilter);
+        sub.registerObserver(perfObs, perfFilter);
         ((DashBoardSubject)sub).readFile();
+        reader.closeFiles();
+        writer.closeFiles();
         
     }
 }
