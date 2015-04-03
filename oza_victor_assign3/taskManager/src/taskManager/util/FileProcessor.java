@@ -1,15 +1,23 @@
 package taskManager.util;
 
 import java.io.*;
+import taskManager.util.MyLogger;
 
 public class FileProcessor {
 	private String inFile;
 	private String outFile;
 	private BufferedReader reader = null;
 	private BufferedWriter writer = null;
+	private MyLogger debug = null;
 	
-	
+	/** FileProcessor class constructor
+	 *
+	 *	@param file input file to read from/write to
+	 *	@operation to write or to read
+	 */
 	public FileProcessor(String file, String operation) {
+		debug = MyLogger.getInstance();
+		debug.print(2, "FileProcessor constructor called");
 		if(operation.equals("read") || operation.equals("READ")){
 			try {
 				inFile = file;
@@ -46,6 +54,10 @@ public class FileProcessor {
 		
 	}
 
+	/** Read a line from the input file
+	 *
+	 *	@return	String value of line that was read
+	 */
 	public String readLine(){
 		String retVal = null;
 		try {
@@ -60,6 +72,10 @@ public class FileProcessor {
 		return retVal;
 	}
 
+	/** Write input line to file given
+	 *
+	 *	@param line Line to write to file
+	 */
 	public void writeLine(String line) {
 		try {
 			writer.write(line);
@@ -73,6 +89,9 @@ public class FileProcessor {
 		}
 	}
 
+	/** close files after done
+	 *
+	 */
 	public void closeFiles() {
 		try {
 			if(reader != null){
@@ -88,4 +107,11 @@ public class FileProcessor {
 			
 		}
 	}
+
+	/** toString method override
+	 *
+	 */
+    public String toString() {
+    	return "FileProcessor";
+    }
 }
